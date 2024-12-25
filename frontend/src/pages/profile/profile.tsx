@@ -1,13 +1,9 @@
-
 function Login() {
-
   return (
     <>
-      <p>
-       Login page
-      </p>
+      <p>Login page</p>
     </>
-  )
+  );
 }
 
-export default Login
+export default Login;
