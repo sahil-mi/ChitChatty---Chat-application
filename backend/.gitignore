@@ -1,0 +1,24 @@
+# --- Python / Django ---
+# Ignore Python compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore Django migrations
+# **/migrations/*.py
+!**/migrations/__init__.py
+
+# Ignore local environment variables
+.env
+
+# Ignore media/uploads (adjust if needed)
+media/
+uploads/
+product_images/
+
+# Ignore SQLite database (if using SQLite)
+db.sqlite3
+
+
+
+
