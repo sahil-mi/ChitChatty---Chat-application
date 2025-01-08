@@ -15,7 +15,7 @@ export function ChatCard(props) {
       }}
     >
       <span className="new-message-indicator">
-        {data.is_seen===false ? "•" : ""}
+        {data.is_seen === false ? "•" : ""}
       </span>
       <div className="chat-card-name">
         <h4>{data.name}</h4>
@@ -27,15 +27,16 @@ export function ChatCard(props) {
 }
 
 function ChatList(props) {
-
-  const {ChatListData} = props
+  const { ChatListData, fetchMessages } = props;
 
   const [state, setState] = useState({});
 
   const [selectedIndex, setSeletedIndex] = useState(0);
 
   const on_card_click = (index) => {
+    const chat_id = ChatListData[index].id;
     setSeletedIndex(index);
+    fetchMessages(chat_id);
   };
 
   return (

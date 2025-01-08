@@ -1,61 +1,57 @@
+import { useEffect, useRef, useState } from "react";
 import "../../styles/chat.css";
 import "../../styles/style.css";
 
-function Chat() {
+function Chat(props) {
+  const { Messages, setMessages, sendMessage, chatName } = props;
+  const [text, setText] = useState("");
+
+  const onChange = (event) => {
+    if (event) {
+      let value = event.target.value;
+      setText(value);
+    }
+  };
+
+  const onSend = () => {
+    sendMessage(text);
+  };
+
   return (
-<div className="chat-div">
-<div className="chat-profile">
-  <h4>Joseph william</h4>
-</div>
+    <div className="chat-div">
+      <div className="chat-profile">
+        <h4>{chatName}</h4>
+      </div>
 
+      {/* chatting display */}
+      {Messages.map((i, index) => (
+        <div className="chat-box">
+          <div
+            className={
+              i.is_auth_user
+                ? "chat-box-container-user"
+                : "chat-box-container-chatter"
+            }
+          >
+            <p>{i.content}</p>
+          </div>
+        </div>
+      ))}
 
-{/* chatting display */}
-<div className="chat-box">
-<div className="chat-box-container-chatter">
-  <p>Hi how are you ?</p>
-</div>
-<div className="chat-box-container-user">
-  <p>Fine thanks</p>
-</div>
+      {/* fixed inputbox */}
 
-<div className="chat-box-container-chatter">
-  <p>Hi how are you ?</p>
-</div>
-<div className="chat-box-container-user">
-  <p>Fine thanks</p>
-</div>
-<div className="chat-box-container-chatter">
-  <p>Hi how are you ?</p>
-</div>
-<div className="chat-box-container-user">
-  <p>Fine thanks</p>
-</div>
-<div className="chat-box-container-chatter">
-  <p>Hi how are you ?</p>
-</div>
-<div className="chat-box-container-user">
-  <p>Fine thanks</p>
-</div>
-<div className="chat-box-container-chatter">
-  <p>Hi how are you ?</p>
-</div>
-<div className="chat-box-container-user">
-  <p>Fine thanks</p>
-</div>
-
-
-</div>
-
-
-{/* fixed inputbox */}
-
-<div className="chat-input-div">
-  {/* <input className="chat-input-box" placeholder="Type here"></input> */}
-  <textarea className="chat-input-box" placeholder="Type here...."></textarea>
-  <button className="chat-send-btn">Send</button>
-</div>
-  
-</div>
+      <div className="chat-input-div">
+        <textarea
+          className="chat-input-box"
+          placeholder="Type here...."
+          value={text}
+          onChange={onChange}
+        ></textarea>
+        <button onClick={onSend} className="chat-send-btn">
+          Send
+        </button>
+      </div>
+    </div>
   );
 }
 

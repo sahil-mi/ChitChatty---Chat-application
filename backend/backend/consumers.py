@@ -2,13 +2,21 @@
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from channels.db import database_sync_to_async
 
+from chat.models import Message,ChatRoom
 class Consumer(WebsocketConsumer):
 
     def connect(self):
         print("connected======")
         self.chat_room_name = self.scope['url_route']['kwargs']['chat_room_name']
         self.room_group_name = 'chat_%s' % self.chat_room_name
+        
+        user = self.scope["user"]
+        if not user.is_authenticated:
+            self.close()
+            return        
+
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -26,26 +34,38 @@ class Consumer(WebsocketConsumer):
         # Receive message from WebSocket
         text_data_json = json.loads(text_data)
         text = text_data_json['text']
-        sender = text_data_json['sender']
+        roomName = text_data_json["roomName"]
+        chat_room = ChatRoom.objects.get(name=roomName)
+        sender = self.scope["user"]
+        message = async_to_sync(self.save_message)(chat_room, sender, text)        
         
-        print(text,"=============")
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': text,
-                'sender': sender
+                'message': message,
             }
         )
+        
+    @database_sync_to_async
+    def save_message(self,chat_room, sender, content):
+        message = Message.objects.create(
+            chat_room = chat_room,
+            sender = sender,
+            content = content,
+        )
+        return message
 
     def chat_message(self, event):
         # Receive message from room group
-        text = event['message']
-        print(text,"===========>>>>2")
-        sender = event['sender']
+        message = event['message']
+        content = message.content
+        sender = message.sender.username
+        is_auth_user = True if message.sender == self.scope['user']  else  False
         # Send message to WebSocket
         self.send(text_data=json.dumps({
-            'text': text,
-            'sender': sender
+            'content': content,
+            'sender': sender,
+            'is_auth_user':is_auth_user
         }))
