@@ -15,88 +15,22 @@ export function ChatCard(props) {
       }}
     >
       <span className="new-message-indicator">
-        {data.is_new_message ? "•" : ""}
+        {data.is_seen===false ? "•" : ""}
       </span>
       <div className="chat-card-name">
         <h4>{data.name}</h4>
         <p>{data.last_message}</p>
       </div>
-      <p>{data.latest_date}</p>
+      <p>{data.last_messaged_date}</p>
     </div>
   );
 }
 
-function ChatList() {
-  const [state, setState] = useState({
-    data: [
-      {
-        is_new_message: true,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: false,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: false,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: false,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: false,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: true,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: true,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: false,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: false,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: false,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-      {
-        is_new_message: false,
-        name: "Joseph William",
-        latest_date: "12/10/2026",
-        last_message: "Hi how are you ?",
-      },
-    ],
-  });
+function ChatList(props) {
+
+  const {ChatListData} = props
+
+  const [state, setState] = useState({});
 
   const [selectedIndex, setSeletedIndex] = useState(0);
 
@@ -114,7 +48,7 @@ function ChatList() {
       </div>
 
       <div className="chat-list">
-        {state.data.map((i, index) => (
+        {ChatListData.map((i, index) => (
           <ChatCard
             data={i}
             index={index}

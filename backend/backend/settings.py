@@ -157,3 +157,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# Allow specific origins
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Add your frontend URL
+]
+
+# If you want to allow all origins (not recommended in production):
+# CORS_ALLOW_ALL_ORIGINS = True
+
+# Optional: If you are using cookies or Authorization headers for authentication:
+CORS_ALLOW_CREDENTIALS = True
