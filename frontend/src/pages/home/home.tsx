@@ -52,13 +52,24 @@ function Home() {
     }
   };
 
+  const switchRoom = (newRoomName) => {
+    if (socket.current) {
+      socket.current.close();
+    }
+    ConnectWebSocket(newRoomName);
+  };
+  
+
+
+
+
   const fetchMessages = async (chat_id) => {
     try {
       const response = await api.get(`/api/messages/${chat_id}`);
       if (response.status === 200) {
         setMessages(response.data.data);
         setChatName(response.data.name);
-        ConnectWebSocket(response.data.name);
+        switchRoom(response.data.name)
       }
     } catch (error) {
       console.error("Error fetching data:", error);
