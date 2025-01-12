@@ -49,7 +49,7 @@ class Consumer(WebsocketConsumer):
         serialized_message = {
             'content': message.content,
             'sender': message.sender.username,
-            'is_auth_user': message.sender == self.scope['user'],
+            'sender_id' : message.sender.id
         }
 
         # Send message to room group

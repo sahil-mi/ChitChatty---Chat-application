@@ -27,11 +27,9 @@ export function ChatCard(props) {
 }
 
 function ChatList(props) {
-  const { ChatListData, fetchMessages } = props;
+  const { ChatListData, fetchMessages, selectedIndex, setSeletedIndex } = props;
 
   const [state, setState] = useState({});
-
-  const [selectedIndex, setSeletedIndex] = useState(0);
 
   const on_card_click = (index) => {
     const chat_id = ChatListData[index].id;

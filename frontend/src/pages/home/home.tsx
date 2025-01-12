@@ -7,6 +7,8 @@ import ChatList from "./chatList";
 import api from "../../utils/api.js";
 
 function Home() {
+  const [selectedIndex, setSeletedIndex] = useState(0);
+
   const [state, setState] = useState({
     ChatListData: [],
   });
@@ -87,6 +89,7 @@ function Home() {
     }
   };
 
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -97,6 +100,8 @@ function Home() {
         <ChatList
           ChatListData={state.ChatListData}
           fetchMessages={fetchMessages}
+          selectedIndex={selectedIndex}
+          setSeletedIndex={setSeletedIndex}
         />
 
         {/* =============== */}
@@ -105,6 +110,7 @@ function Home() {
           setMessages={setMessages}
           sendMessage={sendMessage}
           chatName={chatName}
+          
         />
       </div>
     </section>

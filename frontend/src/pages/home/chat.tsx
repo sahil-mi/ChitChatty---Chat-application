@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../../styles/chat.css";
 import "../../styles/style.css";
+import { storedUserId } from "../../utils/functions";
 
 function Chat(props) {
   const { Messages, setMessages, sendMessage, chatName } = props;
@@ -28,7 +29,7 @@ function Chat(props) {
         <div className="chat-box">
           <div
             className={
-              i.is_auth_user
+              Number(i.sender_id) === Number(storedUserId)
                 ? "chat-box-container-user"
                 : "chat-box-container-chatter"
             }
