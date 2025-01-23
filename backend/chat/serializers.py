@@ -41,15 +41,11 @@ class ChatRoomSerializer(serializers.ModelSerializer):
         
         
 class MessageSerializer(serializers.ModelSerializer):
-    is_auth_user = serializers.SerializerMethodField()
+    sender_id = serializers.SerializerMethodField()
     class Meta:
         model = Message
         fields = '__all__'
 
-    def get_is_auth_user(self,instance):
-        
-        context = self.context
-        request = context["request"]
-        user = request.user
-        return instance.sender.id == user.id
+    def get_sender_id(self,instance):
+        return instance.sender.id 
         
