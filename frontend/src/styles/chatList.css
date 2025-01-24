@@ -52,3 +52,10 @@
   overflow-y: auto;
   height: calc(100vh - 100px);
 }
+
+
+.between{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

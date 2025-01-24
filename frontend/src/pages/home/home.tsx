@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../../styles/home.css";
 import "../../styles/style.css";
 import Chat from "./chat";
-import ChatList from "./chatList";
+import ChatList, { UserList } from "./chatList";
 
 import api from "../../utils/api.js";
 
@@ -112,6 +112,10 @@ function Home() {
           chatName={chatName}
           
         />
+
+        {/* ====================== */}
+        <UserList/>
+
       </div>
     </section>
   );
