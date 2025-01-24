@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     "chat",
     "userauth"
 ]
@@ -58,16 +61,25 @@ CHANNEL_LAYERS = {
 }
 
 
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.SessionAuthentication',
+#         # 'rest_framework.authentication.TokenAuthentication',
+#     ],
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticated',
+#     ],
+# }
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-    ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',  # This is fine for allowing read-only for anonymous users
+        # 'rest_framework.permissions.IsAuthenticated',  # Uncomment this if you want to restrict write access to authenticated users only
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT Authentication for secure endpoints
     ],
 }
-
 
 
 MIDDLEWARE = [
@@ -171,3 +183,14 @@ CORS_ALLOWED_ORIGINS = [
 
 # Optional: If you are using cookies or Authorization headers for authentication:
 CORS_ALLOW_CREDENTIALS = True
+
+
+
+
+
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+}
