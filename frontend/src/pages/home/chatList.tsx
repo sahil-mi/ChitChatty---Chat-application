@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/chatList.css";
 import "../../styles/style.css";
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-
-
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
 
 export function ChatCard(props) {
   const { data, index, selectedIndex, on_card_click } = props;
@@ -33,7 +31,7 @@ export function ChatCard(props) {
 }
 
 function ChatList(props) {
-  const { ChatListData, fetchMessages, selectedIndex, setSeletedIndex } = props;
+  const { ChatListData, fetchMessages, selectedIndex, setSeletedIndex,handleAddUserOpen } = props;
 
   const [state, setState] = useState({});
 
@@ -49,7 +47,8 @@ function ChatList(props) {
         <div className="profile-name">
           <h4>Sahil Mi</h4>
         </div>
-        <div className="profile-add-new">Add New</div>
+        {/* <div className="profile-add-new">Add New</div> */}
+        <Button onClick={handleAddUserOpen} className="profile-add-new" variant="outlined" color="white">Add New User</Button>
       </div>
 
       <div className="chat-list">
@@ -68,53 +67,56 @@ function ChatList(props) {
 
 export default ChatList;
 
-
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
-
 export function UserList(props) {
-  const [open, setOpen] = useState(true);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { fetchUsers, users,open,setOpen,handleOpen,handleClose } = props;
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div>
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box sx={style}>
-        <Typography sx={{textAlign:"center"}} id="modal-modal-title" variant="h6" component="h2">
-          User List
-        </Typography>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            sx={{ textAlign: "center" }}
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+          >
+            User List
+          </Typography>
 
-<div className="between">
-
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-      Nishal
-        </Typography>        
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-      Add
-        </Typography>
-
-</div>
-
-
-      </Box>
-    </Modal>
-  </div>
-);
-  
+          <ol>
+            {users.map((i, index) => (
+              <>
+                <li className="between">
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    {i.first_name + i.last_name}
+                  </Typography>
+                  <Button variant="text">Add</Button>
+                </li>
+              </>
+            ))}
+          </ol>
+        </Box>
+      </Modal>
+    </div>
+  );
 }

@@ -5,6 +5,7 @@ import Signin from "./pages/auth/login";
 import Home from "./pages/home/home";
 import Signup from "./pages/auth/signup";
 import { Snackbars } from "./components/BasicComponents";
+import ProtectedRoute from "./utils/utils";
 
 function App() {
   const [openSnack, setOpenSnack] = useState(false);
@@ -16,7 +17,7 @@ function App() {
 
   return (
     <BrowserRouter>
-          {openSnack ? (
+      {openSnack ? (
         <Snackbars
           open={openSnack}
           setOpen={handleCloseSnack}
@@ -24,10 +25,32 @@ function App() {
         />
       ) : null}
       <Routes>
-        <Route path="/" element={<Signin setOpenSnack={setOpenSnack} setSnackData={setSnackData}  />} />
-        <Route path="/sign-in" element={<Signin setOpenSnack={setOpenSnack} setSnackData={setSnackData}  />} />
-        <Route path="/sign-up" element={<Signup setOpenSnack={setOpenSnack} setSnackData={setSnackData}  />} />
-        <Route path="/home/" element={<Home setOpenSnack={setOpenSnack} setSnackData={setSnackData}  />} />
+        <Route
+          path="/"
+          element={
+            <Signin setOpenSnack={setOpenSnack} setSnackData={setSnackData} />
+          }
+        />
+        <Route
+          path="/sign-in"
+          element={
+            <Signin setOpenSnack={setOpenSnack} setSnackData={setSnackData} />
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={
+            <Signup setOpenSnack={setOpenSnack} setSnackData={setSnackData} />
+          }
+        />
+        <Route
+          path="/home/"
+          element={
+            <ProtectedRoute>
+              <Home setOpenSnack={setOpenSnack} setSnackData={setSnackData} />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {/* Add a Snackbar or Toast component if needed */}
     </BrowserRouter>

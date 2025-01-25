@@ -13,6 +13,11 @@ function Home() {
     ChatListData: [],
   });
 
+  const [users, setUsers] = useState([]);
+  const [AddUserOpen, setAddUserOpen] = useState(false);
+  const handleAddUserOpen = () => setAddUserOpen(true);
+  const handleAddUserClose = () => setAddUserOpen(false);
+
   const [Messages, setMessages] = useState([]);
   const [chatName, setChatName] = useState("");
 
@@ -60,10 +65,6 @@ function Home() {
     }
     ConnectWebSocket(newRoomName);
   };
-  
-
-
-
 
   const fetchMessages = async (chat_id) => {
     try {
@@ -71,7 +72,7 @@ function Home() {
       if (response.status === 200) {
         setMessages(response.data.data);
         setChatName(response.data.name);
-        switchRoom(response.data.name)
+        switchRoom(response.data.name);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -89,6 +90,16 @@ function Home() {
     }
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await api.get("/api/users/");
+      if (response.status === 200) {
+        setUsers(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -102,6 +113,7 @@ function Home() {
           fetchMessages={fetchMessages}
           selectedIndex={selectedIndex}
           setSeletedIndex={setSeletedIndex}
+          handleAddUserOpen={handleAddUserOpen}
         />
 
         {/* =============== */}
@@ -110,12 +122,10 @@ function Home() {
           setMessages={setMessages}
           sendMessage={sendMessage}
           chatName={chatName}
-          
         />
 
         {/* ====================== */}
-        <UserList/>
-
+        <UserList fetchUsers={fetchUsers} users={users} setUsers={setUsers} open={AddUserOpen} setOpen={handleAddUserOpen} handleOpen={handleAddUserClose} handleClose={handleAddUserClose} />
       </div>
     </section>
   );

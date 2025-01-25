@@ -15,6 +15,7 @@ class UsersView(ListModelMixin,generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self,request,*args,**kwargs):
+        print(request.user.username)
         chatroom_queryset = ChatRoom.objects.filter(is_group=False)
         participants_id_list = chatroom_queryset.values_list("participants")
         self.queryset = self.queryset.exclude(id__in = participants_id_list)
