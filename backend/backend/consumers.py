@@ -6,13 +6,15 @@ from chat.models import Message, ChatRoom
 
 class Consumer(WebsocketConsumer):
     def connect(self):
+        print("1111111111111")
         self.chat_room_name = self.scope['url_route']['kwargs']['chat_room_name']
         self.room_group_name = f'chat_{self.chat_room_name}'
-
         user = self.scope["user"]
+        print(self.scope)
         if not user.is_authenticated:
             self.close()
             return        
+        print("222222222222")
 
         # Add user to room group
         async_to_sync(self.channel_layer.group_add)(
@@ -34,6 +36,7 @@ class Consumer(WebsocketConsumer):
         text = text_data_json['text']
         room_name = text_data_json["roomName"]
         sender = self.scope["user"]
+        print(sender,"-------sender")
 
         # Get the chat room
         chat_room = async_to_sync(self.get_chat_room)(room_name)

@@ -25,12 +25,18 @@ class UsersView(ListModelMixin,generics.GenericAPIView):
 class ChatRoomView(ListModelMixin,CreateModelMixin, generics.GenericAPIView):
     queryset = ChatRoom.objects.all()
     serializer_class = ChatRoomSerializer
+    permission_classes = [IsAuthenticated]
+
     
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
     
     def post(self,request,*args,**kwargs):
         return self.create(request, *args, **kwargs)
+    
+    def perform_create(self,serializer):
+        chat_room  = serializer.save(created_user=self.request.user)
+        chat_room.participants.add(self.request.user)
 
 
 

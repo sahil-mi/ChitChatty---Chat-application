@@ -8,6 +8,8 @@ class ChatRoom(models.Model):
     participants = models.ManyToManyField(User, related_name="chatrooms")
     created_at = models.DateTimeField(auto_now_add=True)
     is_group = models.BooleanField(default=False)
+    created_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_chatrooms")  # Added field
+
     
     def __str__(self):
         return self.name

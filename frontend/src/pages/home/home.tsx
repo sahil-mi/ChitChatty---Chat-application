@@ -25,7 +25,8 @@ function Home() {
 
   // connect to websocket
   const ConnectWebSocket = (roomName) => {
-    socket.current = new WebSocket(`ws://localhost:8000/ws/chat/${roomName}/`);
+    const accessToken = localStorage.getItem("access_token");
+    socket.current = new WebSocket(`ws://localhost:8000/ws/chat/${roomName}/?token=${accessToken}`);
 
     socket.current.onopen = () => {
       //pass
@@ -101,6 +102,22 @@ function Home() {
     }
   };
 
+  const addToChatRoom = async (data) => {
+    try {
+      const response = await api.post("/api/chatrooms/", data);
+      if (response.status === 201) { // Status 201 indicates successful creation
+        setState((prevState) => ({
+          ...prevState,
+          ChatListData: [...prevState.ChatListData, response.data], // Append new chat room to the list
+        }));
+      }
+    } catch (error) {
+      console.error("Error adding chat room:", error);
+    }
+  };
+  
+
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -125,7 +142,7 @@ function Home() {
         />
 
         {/* ====================== */}
-        <UserList fetchUsers={fetchUsers} users={users} setUsers={setUsers} open={AddUserOpen} setOpen={handleAddUserOpen} handleOpen={handleAddUserClose} handleClose={handleAddUserClose} />
+        <UserList fetchUsers={fetchUsers} users={users} setUsers={setUsers} open={AddUserOpen} setOpen={handleAddUserOpen} handleOpen={handleAddUserClose} handleClose={handleAddUserClose} addToChatRoom={addToChatRoom} />
       </div>
     </section>
   );

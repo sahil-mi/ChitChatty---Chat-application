@@ -80,7 +80,17 @@ const style = {
 };
 
 export function UserList(props) {
-  const { fetchUsers, users,open,setOpen,handleOpen,handleClose } = props;
+  const { fetchUsers, users,open,setOpen,handleOpen,handleClose,addToChatRoom } = props;
+
+  const handleOnClick = (i)=>{
+    let data = {
+      name:i.first_name,
+      participants:[i.id]
+  }
+    addToChatRoom(data)
+  }
+
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -110,7 +120,7 @@ export function UserList(props) {
                   <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     {i.first_name + i.last_name}
                   </Typography>
-                  <Button variant="text">Add</Button>
+                  <Button variant="text" onClick={()=>{handleOnClick(i)}} >Add</Button>
                 </li>
               </>
             ))}

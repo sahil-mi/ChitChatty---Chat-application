@@ -17,6 +17,7 @@ class ChatRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoom
         fields = '__all__'
+        read_only_fields = ["created_user"]
     
     def get_last_message(self,instance):
         data = None
